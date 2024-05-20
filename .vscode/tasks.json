@@ -1,6 +1,7 @@
 {
     "version": "2.0.0",
     "tasks": [
+        // Scripts do front
         {
             "label": "front docker-compose up",
             "type": "shell",
