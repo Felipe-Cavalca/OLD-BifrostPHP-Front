@@ -6,7 +6,7 @@ Se você identificou uma vulnerabilidade em nossa aplicação, gostaríamos de s
 
 **Passos para relatar uma vulnerabilidade:**
 
-1. Vá para a guia "Issues" (Problemas) em nosso repositório no GitHub.
+1. Vá para a guia "Issues" (Problemas) do repositório no GitHub.
 
 2. Clique em "New Issue" (Novo Problema).
 
