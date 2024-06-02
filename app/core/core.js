@@ -1,5 +1,5 @@
 // Classe pra menipulação de elementos do dom
-class DomPredocs {
+class DOM {
 
     get head() {
         return document.head;
@@ -87,10 +87,10 @@ class DomPredocs {
 };
 
 // Classe principal do framework
-class Predocs {
+class Bifrost {
 
     // Classe para manipulação de elementos do dom
-    #dom = new DomPredocs();
+    #dom = new DOM();
 
     // Configurações do app
     #configApp = null;
@@ -109,7 +109,6 @@ class Predocs {
 
         this.#includeDefaultCss();
         this.#includeDefaultJs();
-        this.#includeComponents();
         this.#includeMetaDataAndLink();
         this.#applyPWA();
 
@@ -123,10 +122,6 @@ class Predocs {
             this.#configApp = JSON.parse(this.requestGet("/config/app.json"));
         }
         return this.#configApp;
-    }
-
-    get listComponents() {
-        return JSON.parse(this.requestGet("/config/components.json"));
     }
 
     get #includes() {
@@ -167,43 +162,6 @@ class Predocs {
         });
     }
 
-    #includeComponents() {
-        const components = this.listComponents;
-        const pathComponent = this.#getUrl("/components");
-        const strConstrutorComponent = this.requestGet(this.#getUrl("/core") + "/createComponent.js");
-
-        for (let name in components) {
-            if (!this.#dom.existComponent(name)) {
-                continue;
-            }
-
-            let componentData = components[name];
-
-            let htmlComponent = this.requestGet(`${pathComponent}/${componentData.html}.html`);
-            let nameComponent = name + "ComponentHtml";
-            let nameElement = "c-" + name;
-            let jsComponent = "";
-            let cssComponent = "";
-
-            if (componentData.js) {
-                jsComponent = this.requestGet(`${pathComponent}/${componentData.js}.js`);
-            }
-
-            if (componentData.css) {
-                cssComponent = this.requestGet(`${pathComponent}/${componentData.css}.css`);
-            }
-
-            let strClassComponent = strConstrutorComponent;
-            strClassComponent = strClassComponent.replaceAll(/[\r\n]+/g, ' ');
-            strClassComponent = strClassComponent.replaceAll("__nameComponent__", nameComponent);
-            strClassComponent = strClassComponent.replaceAll("__html__", htmlComponent);
-            strClassComponent = strClassComponent.replaceAll("__nameElement__", nameElement);
-            strClassComponent = strClassComponent.replaceAll("__script__", jsComponent);
-            strClassComponent = strClassComponent.replaceAll("__css__", cssComponent);
-            eval(strClassComponent);
-        }
-    }
-
     #includeMetaDataAndLink() {
         let $this = this;
         let metaData = this.#includes.metaData;
@@ -236,7 +194,7 @@ class Predocs {
 
     #getUrl(url) {
         if (url.startsWith("/")) {
-            let elem = document.querySelector("[src$='predocs.js']");
+            let elem = document.querySelector("[src$='core.js']");
             let src = elem.src;
             let appPath = src.substring(0, src.lastIndexOf("/"));
             let parentPath = appPath.substring(0, appPath.lastIndexOf("/"));
@@ -308,7 +266,6 @@ class Predocs {
 
     createOptionsInSelect(elem, options) {
         options.forEach(attrOption => {
-            console.log(attrOption);
             let option = this.#dom.createElement("option", attrOption);
             option.textContent = attrOption.textContent;
             this.#dom.insertChild(option, elem);
