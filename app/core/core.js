@@ -1,5 +1,5 @@
 // Classe pra menipulação de elementos do dom
-class DomPredocs {
+class DOM {
 
     get head() {
         return document.head;
@@ -87,10 +87,10 @@ class DomPredocs {
 };
 
 // Classe principal do framework
-class Predocs {
+class Bifrost {
 
     // Classe para manipulação de elementos do dom
-    #dom = new DomPredocs();
+    #dom = new DOM();
 
     // Configurações do app
     #configApp = null;
@@ -194,7 +194,7 @@ class Predocs {
 
     #getUrl(url) {
         if (url.startsWith("/")) {
-            let elem = document.querySelector("[src$='predocs.js']");
+            let elem = document.querySelector("[src$='core.js']");
             let src = elem.src;
             let appPath = src.substring(0, src.lastIndexOf("/"));
             let parentPath = appPath.substring(0, appPath.lastIndexOf("/"));
