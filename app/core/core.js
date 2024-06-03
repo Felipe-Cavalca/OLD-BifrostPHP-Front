@@ -194,7 +194,7 @@ class Bifrost {
 
     #getUrl(url) {
         if (url.startsWith("/")) {
-            let elem = document.querySelector("[src$='core.js']");
+            let elem = document.currentScript;
             let src = elem.src;
             let appPath = src.substring(0, src.lastIndexOf("/"));
             let parentPath = appPath.substring(0, appPath.lastIndexOf("/"));
