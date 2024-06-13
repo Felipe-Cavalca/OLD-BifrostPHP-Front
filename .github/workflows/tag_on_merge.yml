@@ -153,7 +153,19 @@ jobs:
 
       - name: Create and push branch
         run: |
-          git checkout ${BRANCH_NAME} || git checkout -b ${BRANCH_NAME}
-          git push origin ${BRANCH_NAME}
+          git checkout -b ${BRANCH_NAME} || git checkout ${BRANCH_NAME}
+          git reset --hard origin/main
+          git push --force origin ${BRANCH_NAME}
         env:
-          BRANCH_NAME: lastet-release
+          BRANCH_NAME: latest-release
+
+  sync_labels:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    steps:
+    - uses: actions/checkout@v2
+    - uses: micnncim/action-label-syncer@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        manifest: .github/labels.yml
+        prune: true
